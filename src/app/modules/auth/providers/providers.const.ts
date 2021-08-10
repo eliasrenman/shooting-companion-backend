@@ -1,0 +1,1 @@
+export const PROVIDER_ENDPOINT_PREFIX = 'auth/'
