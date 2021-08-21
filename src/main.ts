@@ -7,14 +7,23 @@ import './configs/ts-paths-fix-apply';
 import { AppModule } from '@app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppConfigService } from './app/config/app-config.service';
+import { readFileSync } from 'fs';
+
+const httpsOptions = {
+  key: readFileSync('./secrets/private-key.pem'),
+  cert: readFileSync('./secrets/public-certificate.pem'),
+};
+
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    httpsOptions
+  });
 
   const appConfig: AppConfigService = app.get('AppConfigService');
   if(appConfig.isProduction === false) {
     const config = new DocumentBuilder()
-    .setTitle('Nestjs Template')
+    .setTitle('Shooting Companion')
     .setDescription('Nestjs Template')
     .addBearerAuth()
     .setVersion('1.0')

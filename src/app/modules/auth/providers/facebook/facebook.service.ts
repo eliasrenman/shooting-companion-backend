@@ -11,7 +11,7 @@ export class FacebookService {
 
   public async login(req: Request) {
     if (!req.user) {
-      return 'No user from google'
+      return 'No user from facebook'
     }
     const parsedInput = await new FacebookAuthProviderAdapter(req.user as FacebookUser).parsed;
 

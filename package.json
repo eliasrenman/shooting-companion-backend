@@ -1,21 +1,16 @@
 {
-  "name": "nest-typescript-starter",
+  "name": "shooting-companion",
   "description": "Nest TypeScript starter repository",
   "license": "MIT",
   "private": true,
   "version": "1.0.0",
   "bugs": {
-    "url": "https://github.com/korniychuk/wallaby-ts-webpack-starter/issues"
+    "url": "https://github.com/eliasrenman/shooting-companion-backend/issues"
   },
-  "homepage": "https://github.com/korniychuk/wallaby-ts-webpack-starter#readme",
+  "homepage": "https://github.com/eliasrenman/shooting-companion-backend#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/korniychuk/wallaby-ts-webpack-starter.git"
-  },
-  "engines": {
-    "node": "^14.16.1",
-    "npm": "^6.13.4",
-    "yarn": "^1.21.1"
+    "url": "git+https://github.com/eliasrenman/shooting-companion-backend.git"
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
@@ -46,6 +41,7 @@
     "@nestjs/mongoose": "^7.2.4",
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.0.0",
+    "@nestjs/serve-static": "^2.2.2",
     "@nestjs/swagger": "^4.8.0",
     "@types/express-serve-static-core": "^4.17.1",
     "@types/passport-facebook": "^2.1.10",
