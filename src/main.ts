@@ -16,9 +16,16 @@ const httpsOptions = {
 
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule, {
-    httpsOptions: process.env.NODE_ENV == '443'? httpsOptions: {}
-  });
+  let app;
+  
+  if(process.env.HTTP_PORT == '443') {
+    app = await NestFactory.create(AppModule, {
+      httpsOptions
+    });
+  } else {
+    app = await NestFactory.create(AppModule);
+  }
+
 
   const appConfig: AppConfigService = app.get('AppConfigService');
   if(appConfig.isProduction === false) {

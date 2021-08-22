@@ -1,10 +1,11 @@
+import { AuthProvider } from './../../model/auth-provider.model';
 import { Controller, Get, Redirect, Req, Res, UseGuards } from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { FacebookService as FacebookService } from './facebook.service';
 import { PROVIDER_ENDPOINT_PREFIX } from '../providers.const';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiExtraModels, ApiTags } from '@nestjs/swagger';
 import { stringify } from 'query-string';
 
 @Controller(PROVIDER_ENDPOINT_PREFIX + 'facebook')
@@ -17,6 +18,8 @@ export class FacebookController {
   async facebookAuth() {}
 
   @Get('redirect')
+  @ApiBody({description: 'Facebook redirect'})
+  @ApiExtraModels(AuthProvider)
   @UseGuards(AuthGuard('facebook'))
   @Redirect('shootingcompanion://callback')
   async facebookAuthRedirect(@Req() req: Request, @Res() res: Response) {
