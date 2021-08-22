@@ -1,10 +1,11 @@
-import { Controller, Get, Redirect, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Redirect, Req, Res, UseGuards } from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { GoogleService } from './google.service';
 import { PROVIDER_ENDPOINT_PREFIX } from '../providers.const';
 import { ApiTags } from '@nestjs/swagger';
+import { stringify } from 'query-string';
 
 @Controller(PROVIDER_ENDPOINT_PREFIX + 'google')
 @ApiTags('auth/google')
@@ -18,7 +19,11 @@ export class GoogleController {
   @Get('redirect')
   @UseGuards(AuthGuard('google'))
   @Redirect('shootingcompanion://callback')
-  async googleAuthRedirect(@Req() req: Request) {
-    return { url: `shootingcompanion://callback?data=${JSON.stringify(await this.appService.login(req))}` };
+  async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+    // @ts-ignore
+    const {user: _user, ...loginData} = await this.appService.login(req);
+
+    res.redirect(`shootingcompanion://callback?${stringify({...loginData, user: JSON.stringify(_user)})}`, )
+    res.end();
   }
 }

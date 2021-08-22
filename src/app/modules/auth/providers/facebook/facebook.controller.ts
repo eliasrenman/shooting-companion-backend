@@ -27,7 +27,6 @@ export class FacebookController {
 
     res.redirect(`shootingcompanion://callback?${stringify({...loginData, user: JSON.stringify(_user)})}`, )
     res.end();
-    // return { url: `` };
   }
 
 }
