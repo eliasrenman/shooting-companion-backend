@@ -21,11 +21,11 @@ export class FacebookController {
   // @Redirect('shootingcompanion://callback')
 
   async facebookAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    const user = await this.appService.login(req);
-
-
     // @ts-ignore
-    res.redirect(`shootingcompanion://callback?${stringify(user)}`, )
+    const {user: _user, ...loginData} = await this.appService.login(req);
+
+
+    res.redirect(`shootingcompanion://callback?${stringify({...loginData, user: JSON.stringify(_user)})}`, )
     res.end();
     // return { url: `` };
   }
