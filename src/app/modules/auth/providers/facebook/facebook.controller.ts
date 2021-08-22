@@ -1,10 +1,11 @@
-import { Controller, Get, Redirect, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { FacebookService as FacebookService } from './facebook.service';
 import { PROVIDER_ENDPOINT_PREFIX } from '../providers.const';
 import { ApiTags } from '@nestjs/swagger';
+import { stringify } from 'query-string';
 
 @Controller(PROVIDER_ENDPOINT_PREFIX + 'facebook')
 @ApiTags('auth/facebook')
@@ -17,12 +18,16 @@ export class FacebookController {
 
   @Get('redirect')
   @UseGuards(AuthGuard('facebook'))
-  @Redirect('shootingcompanion://callback/')
+  // @Redirect('shootingcompanion://callback')
 
-  async facebookAuthRedirect(@Req() req: Request) {
-    return { url: `shootingcompanion://callback?data=${JSON.stringify(await this.appService.login(req))}` };
+  async facebookAuthRedirect(@Req() req: Request, @Res() res: Response) {
+    const user = await this.appService.login(req);
 
-    return 
+
+    // @ts-ignore
+    res.redirect(`shootingcompanion://callback?${stringify(user)}`, )
+    res.end();
+    // return { url: `` };
   }
 
 }
