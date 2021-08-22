@@ -23,7 +23,8 @@ export class GoogleController {
     // @ts-ignore
     const {user: _user, ...loginData} = await this.appService.login(req);
 
-    res.redirect(`shootingcompanion://callback?${stringify({...loginData, user: JSON.stringify(_user)})}`, )
-    res.end();
+    return {
+      url: `shootingcompanion://callback?${stringify({...loginData, user: JSON.stringify(_user)})}`
+    }
   }
 }
