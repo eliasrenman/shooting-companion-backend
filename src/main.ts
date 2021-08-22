@@ -17,7 +17,7 @@ const httpsOptions = {
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, {
-    httpsOptions
+    httpsOptions: process.env.NODE_ENV == '443'? httpsOptions: {}
   });
 
   const appConfig: AppConfigService = app.get('AppConfigService');
