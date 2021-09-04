@@ -5,11 +5,13 @@ export type SyncPullOptions = {
    * timestamp in ms
    */
   timestamp: number
+
+  user: string;
 }
 
 export interface Sync {
   pull(options: SyncPullOptions): Promise<SyncPullResult>;
-  push(changes: Changes, timestamp: number): Promise<void>;
+  push(changes: Changes, timestamp: number, user: string): Promise<void>;
 }
 
 export class SyncEvent<T extends any> {

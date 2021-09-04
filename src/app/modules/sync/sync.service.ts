@@ -17,24 +17,25 @@ export class SyncService implements Sync {
 
   public async pull(options: SyncPullOptions): Promise<SyncPullResult> {
     return {
-      changes: await this.pullModels(options.timestamp),
-      timestamp: new Date()?.getTime()
+      changes: await this.pullModels(options.timestamp, options.user),
+      timestamp: new Date()?.getTime(),
     }
   }
 
-  private async pullModels(timestamp: number): Promise<Changes> {
+  private async pullModels(timestamp: number, user: string): Promise<Changes> {
     let changes: Changes = {};
 
     for (const model of this.models) {
-      changes[model] = await this.pullModel(timestamp, model);
+      changes[model] = await this.pullModel(timestamp, model, user);
     }
     return changes;
   }
 
-  private async pullModel<T>(timestamp: number, model: string): Promise<SyncTableChangeSet<T>> {
+  private async pullModel<T>(timestamp: number, model: string, user: string): Promise<SyncTableChangeSet<T>> {
 
     const result = await this.eventEmitter.emitAsync(`${model}.pull.*`, {
-      timestamp
+      timestamp,
+      user
     })
     return {
       created: find(result, item => item?.type === 'created')?.data || [],
@@ -43,19 +44,17 @@ export class SyncService implements Sync {
     }
   }
 
-  public async push(changes: Changes, timestamp: number): Promise<void> {
-    console.log("push is called", changes);
-    
-    await this.pushModels(changes, timestamp);
+  public async push(changes: Changes, timestamp: number, user: string): Promise<void> {
+    await this.pushModels(changes, timestamp, user);
   }
 
-  private async pushModels(changes: Record<string, SyncTableChangeSet<Result>>, timestamp: number) {
+  private async pushModels(changes: Record<string, SyncTableChangeSet<Result>>, timestamp: number, user: string) {
     for (const [key, value] of Object.entries(changes)) {
-      console.log("Calling emit on", key, value);
       
       await this.eventEmitter.emitAsync(`${key}.push.*`, {
         timestamp,
-        changes: value
+        changes: value,
+        user
       })
     }
   }

@@ -7,9 +7,13 @@ import { OnEvent } from '@nestjs/event-emitter';
 
 type ResultEvent = {
   changes: SyncTableChangeSet<Result>,
-  timestamp: number
+  timestamp: number;
+  user: string;
 };
-
+type Pull = {
+  timestamp: number;
+  user: string;
+}
 @Injectable()
 export class ResultListener {
 
@@ -17,32 +21,32 @@ export class ResultListener {
 
   
   @OnEvent(RESULT_PULL_CREATED, { async: true, promisify: true })
-  public async pullCreated({timestamp}: {timestamp: number}) {
-    return this.resultService.pullCreated(timestamp);
+  public async pullCreated(data: Pull) {
+    return this.resultService.pullCreated(data.timestamp, data.user);
   }
   
   @OnEvent(RESULT_PULL_UPDATED, { async: true, promisify: true })
-  public async pullUpdated({timestamp}: {timestamp: number}) {
-    return this.resultService.pullUpdated(timestamp);
+  public async pullUpdated(data: Pull) {
+    return this.resultService.pullUpdated(data.timestamp, data.user);
   }
   
   @OnEvent(RESULT_PULL_DELETED, { async: true, promisify: true })
-  public async pullDeleted({timestamp}: {timestamp: number}) {
-    return this.resultService.pullDeleted(timestamp);
+  public async pullDeleted(data: Pull) {
+    return this.resultService.pullDeleted(data.timestamp, data.user);
   }
   
   @OnEvent(RESULT_PUSH_CREATED, { async: true, promisify: true })
-  public async pushCreated({changes, timestamp}: ResultEvent) {
-    return this.resultService.pushCreated(changes?.created, timestamp);
+  public async pushCreated({changes, timestamp, user}: ResultEvent) {
+    return this.resultService.pushCreated(changes?.created, timestamp, user);
   }
   
   @OnEvent(RESULT_PUSH_UPDATED, { async: true, promisify: true })
-  public async pushUpdated({changes, timestamp}: ResultEvent) {
-    return this.resultService.pushUpdated(changes?.updated, timestamp);
+  public async pushUpdated({changes, timestamp, user}: ResultEvent) {
+    return this.resultService.pushUpdated(changes?.updated, timestamp, user);
   }
   
   @OnEvent(RESULT_PUSH_DELETED, { async: true, promisify: true })
-  public async pushDeleted({changes, timestamp}: ResultEvent) {
-    return this.resultService.pushDeleted(changes?.deleted, timestamp);
+  public async pushDeleted({changes, timestamp, user}: ResultEvent) {
+    return this.resultService.pushDeleted(changes?.deleted, timestamp, user);
   }
 }
