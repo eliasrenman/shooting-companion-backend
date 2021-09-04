@@ -36,17 +36,22 @@ export class ResultService implements RecordSync<Result> {
 
   private async fetchAfterUpdatedAt(timestamp: number, user: string, deleted = false): Promise<ResultDocument[]> {
     // @ts-ignore
-    return this.resultModel.find({ updatedAt: { $gte: timestamp }, deleted, user });
+    return this.resultModel.find({ createdAt: { $lte: timestamp }, updatedAt: { $gte: timestamp }, deleted, user });
   }
 
   private async fetchAfterCreatedAt(timestamp: number, user: string, deleted = false): Promise<ResultDocument[]> {
+    
     // @ts-ignore
     return this.resultModel.find({ createdAt: { $gte: timestamp }, deleted, user });
   }
 
+  private async fetchDeleted(timestamp: number, user: string): Promise<ResultDocument[]> {
+    // @ts-ignore
+    return this.resultModel.find({ updatedAt: { $gte: timestamp }, deleted: true, user });
+  }
 
   public async pullDeleted(timestamp: number, user: string): Promise<SyncEvent<string[]>> {
-    const data = (await this.fetchAfterUpdatedAt(timestamp, user, true))?.map(item => item?._id)
+    const data = (await this.fetchDeleted(timestamp, user))?.map(item => item?._id)
 
     return {
       event: RESULT_PULL_UPDATED,
