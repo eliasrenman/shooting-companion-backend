@@ -1,14 +1,19 @@
-import { RECORD, RECORD_PING } from './record/record.const';
-import { Controller, Get } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+import { SyncPullResult } from '@app/modules/sync/interface/sync-pull-result';
+import { SyncService } from '@app/modules/sync/sync.service';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 
 @Controller('sync')
 export class SyncController {
 
-  constructor(private eventEmitter: EventEmitter2) {}
+  constructor(private service: SyncService) { }
 
-  @Get('ping')
-  async ping() {
-    return this.eventEmitter.emitAsync(RECORD, 'ping')
+  @Get('pull')
+  async pullChanges(@Query('lastPulledAt') lastPulledAt: number): Promise<SyncPullResult> {
+    return this.service.pull({ timestamp: lastPulledAt });
+  }
+
+  @Post('push')
+  async pushCHanges(@Body() {changes, lastPulledAt}: any) {
+    return this.service.push(changes, lastPulledAt);
   }
 }

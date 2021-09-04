@@ -21,9 +21,7 @@ export class AuthProvider extends Model {
   primaryKey?: string;
 
   @ApiHideProperty()
-  @Prop({
-    default: () => v1()
-  })
+  @Prop()
   latestAccessToken?: string;
 
   @ApiProperty()
