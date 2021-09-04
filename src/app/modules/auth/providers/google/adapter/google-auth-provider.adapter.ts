@@ -27,7 +27,7 @@ export class GoogleAuthProviderAdapter {
       name: `${data.firstName} ${data.lastName}`,
       primaryKey: encryptedPrimaryKey,
       provider: 'google',
-      imageUrl: data.picture,
+      imageUrl: data.picture?.replace('s96', 's256'),
       latestAccessToken: data.accessToken
     }
   }

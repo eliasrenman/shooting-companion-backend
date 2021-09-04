@@ -28,8 +28,8 @@ export class FacebookAuthProviderAdapter {
       // primaryKey: data.email,
       primaryKey: encryptedPrimaryKey,
       provider: 'facebook',
-      imageUrl: data.picture,
-      // imageUrl:  `https://graph.facebook.com/${data.primaryKey}/picture?type=square&access_token=${data.accessToken}`,
+      // imageUrl: data.picture,
+      imageUrl:  `https://graph.facebook.com/${data.primaryKey}/picture?width=256&height=256&access_token=${data.accessToken}`,
       latestAccessToken: data.accessToken
     }
   }
