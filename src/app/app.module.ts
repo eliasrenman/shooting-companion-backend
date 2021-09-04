@@ -6,6 +6,8 @@ import { DatabaseModule } from './../shared/database/database.module';
 import { AppConfigModule } from './config/app-config.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { SyncModule } from './modules/sync/sync.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -14,9 +16,14 @@ import { join } from 'path';
       // rootPath: '../static',
       // serveRoot: 'static'
     }),
+    EventEmitterModule.forRoot({
+      delimiter: '.',
+      wildcard: true,
+    }),
     AuthModule,
     AppConfigModule,
-    DatabaseModule
+    DatabaseModule,
+    SyncModule
   ],
   controllers: [AppController],
   providers: [AppService]
