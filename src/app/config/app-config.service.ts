@@ -14,8 +14,7 @@ export class AppConfigService {
 
   public get isProduction(): boolean {
     const result = this.appConfig.NODE_ENV === 'production';
-    console.log(result, this.appConfig.NODE_ENV);
-    
+
     return result;
   }
 }

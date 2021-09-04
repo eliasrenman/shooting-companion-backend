@@ -8,6 +8,7 @@ import { AppModule } from '@app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppConfigService } from './app/config/app-config.service';
 import { readFileSync } from 'fs';
+import { Logger } from '@nestjs/common';
 
 const httpsOptions = {
   key: readFileSync('./secrets/private-key.pem'),
@@ -28,6 +29,7 @@ async function bootstrap(): Promise<void> {
 
 
   const appConfig: AppConfigService = app.get('AppConfigService');
+  
   if(appConfig.isProduction === false) {
     const config = new DocumentBuilder()
     .setTitle('Shooting Companion')
@@ -38,7 +40,11 @@ async function bootstrap(): Promise<void> {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
   }
+  const logger = new Logger();
+
+  logger.log(`Listening port: ${appConfig.port}`)
   
+
   await app.listen(appConfig.port);
 }
 bootstrap();
