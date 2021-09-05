@@ -44,11 +44,21 @@ export class Result extends Model {
   public notes?: string;
 
   @ApiPropertyOptional()
-  @Prop({ required: false, type: MSchema.Types.Mixed })
+  @Prop({ 
+    required: false,
+    type: MSchema.Types.Mixed,
+    get: (val: any) => JSON.stringify(val),
+    set: (val: any) => JSON.parse(val)
+  })
   public round_count?: Record<string, any>;
 
   @ApiPropertyOptional()
-  @Prop({ required: false, type: MSchema.Types.Mixed })
+  @Prop({ 
+    required: false, 
+    type: MSchema.Types.Mixed,
+    get: (val: any) => JSON.stringify(val),
+    set: (val: any) => JSON.parse(val)
+  })
   public result?: Record<string, any>;
 
   @ApiProperty()
