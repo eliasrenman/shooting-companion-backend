@@ -9,6 +9,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppConfigService } from './app/config/app-config.service';
 import { readFileSync } from 'fs';
 import { Logger } from '@nestjs/common';
+import * as morgan from 'morgan';
 
 const httpsOptions = {
   key: readFileSync('./secrets/private-key.pem'),
@@ -27,7 +28,7 @@ async function bootstrap(): Promise<void> {
     app = await NestFactory.create(AppModule);
   }
 
-
+  app.use(morgan('combined'))
   const appConfig: AppConfigService = app.get('AppConfigService');
   
   if(appConfig.isProduction === false) {

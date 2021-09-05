@@ -29,12 +29,12 @@ export class RecordSync<T extends Document, M extends Record<any,any>> implement
 
   private async fetchAfterUpdatedAt(timestamp: number, user: string, deleted = false): Promise<T[]> {
     // @ts-ignore
-    return this.model.find({ createdAt: { $lte: timestamp }, updatedAt: { $gte: timestamp }, deleted, user });
+    return this.model.find({ createdAt: { $lte: timestamp || 0 }, updatedAt: { $gte: timestamp || 0 }, deleted, user });
   }
 
   private async fetchAfterCreatedAt(timestamp: number, user: string, deleted = false): Promise<T[]> {
     // @ts-ignore
-    return this.model.find({ createdAt: { $gte: timestamp }, deleted, user });
+    return this.model.find({ createdAt: { $gte: timestamp || 0 }, deleted, user });
   }
 
   private async fetchDeleted(timestamp: number, user: string): Promise<T[]> {
