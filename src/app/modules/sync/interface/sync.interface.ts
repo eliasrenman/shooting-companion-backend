@@ -16,8 +16,6 @@ export interface Sync {
 
 export class SyncEvent<T extends any> {
 
-  public event!: string;
-
   public type!: 'created' | 'updated' | 'deleted';
 
   public data!: T;

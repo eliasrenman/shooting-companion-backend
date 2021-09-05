@@ -1,6 +1,6 @@
 import { SyncEvent } from '@app/modules/sync/interface/sync.interface';
 
-export interface RecordSync<T extends any> {
+export interface RecordSyncI<T extends any> {
   pullCreated(timestamp: number, user: string): Promise<SyncEvent<T[]>>
   pullUpdated(timestamp: number, user: string): Promise<SyncEvent<T[]>>
   pullDeleted(timestamp: number, user: string): Promise<SyncEvent<string[]>>
