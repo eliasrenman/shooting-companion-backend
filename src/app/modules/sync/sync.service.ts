@@ -5,12 +5,14 @@ import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import {find} from 'lodash';
 import { Result } from '@app/modules/sync/results/result.model';
+import { REPORT } from '@app/modules/sync/reports/reports.const';
 
 @Injectable()
 export class SyncService implements Sync {
 
   private readonly models = [
     RESULT,
+    REPORT
   ];
 
   constructor(private eventEmitter: EventEmitter2) { }
